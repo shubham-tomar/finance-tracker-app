@@ -1,8 +1,8 @@
 import React, { useState, useCallback } from 'react';
-import { View, Button, StyleSheet } from 'react-native';
+import { View, FlatList, Text, TouchableOpacity } from 'react-native';
 import { useFocusEffect } from '@react-navigation/native';
-import ExpenseList from '../components/ExpenseList';
 import { getDBConnection, getExpenses, createTables } from '../storage';
+import { globalStyles, colors } from '../styles';
 
 const HomeScreen = ({ navigation }) => {
   const [expenses, setExpenses] = useState([]);
@@ -14,7 +14,6 @@ const HomeScreen = ({ navigation }) => {
     setExpenses(storedExpenses);
   };
 
-  // Load data when the component mounts
   useFocusEffect(
     useCallback(() => {
       loadData();
@@ -22,21 +21,26 @@ const HomeScreen = ({ navigation }) => {
   );
 
   return (
-    <View style={styles.container}>
-      <ExpenseList expenses={expenses} />
-      <Button
-        title="Add Expense"
-        onPress={() => navigation.navigate('AddExpense')}
+    <View style={globalStyles.container}>
+      <FlatList
+        data={expenses}
+        keyExtractor={(item) => item.id.toString()}
+        renderItem={({ item }) => (
+          <View style={[globalStyles.input, { backgroundColor: colors.white }]}>
+            <Text style={globalStyles.title}>{item.title}</Text>
+            <Text style={{ color: colors.success }}>${item.amount.toFixed(2)}</Text>
+            <Text style={{ color: colors.gray }}>{item.date}</Text>
+          </View>
+        )}
       />
+      <TouchableOpacity
+        style={[globalStyles.button, { backgroundColor: colors.primary }]}
+        onPress={() => navigation.navigate('AddExpense')}
+      >
+        <Text style={globalStyles.buttonText}>Add Expense</Text>
+      </TouchableOpacity>
     </View>
   );
 };
-
-const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    padding: 20,
-  },
-});
 
 export default HomeScreen;

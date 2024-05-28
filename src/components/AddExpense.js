@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
-import { View, TextInput, Button, StyleSheet } from 'react-native';
+import { View, TextInput, TouchableOpacity, Text } from 'react-native';
+import { globalStyles, colors } from '../styles';
 
 const AddExpense = ({ onSubmit }) => {
   const [title, setTitle] = useState('');
@@ -14,42 +15,34 @@ const AddExpense = ({ onSubmit }) => {
   };
 
   return (
-    <View style={styles.container}>
+    <View style={globalStyles.container}>
       <TextInput
-        style={styles.input}
+        style={globalStyles.input}
         placeholder="Title"
         value={title}
         onChangeText={setTitle}
       />
       <TextInput
-        style={styles.input}
+        style={globalStyles.input}
         placeholder="Amount"
         value={amount}
         onChangeText={setAmount}
         keyboardType="numeric"
       />
       <TextInput
-        style={styles.input}
+        style={globalStyles.input}
         placeholder="Date"
         value={date}
         onChangeText={setDate}
       />
-      <Button title="Add Expense" onPress={handleAddExpense} />
+      <TouchableOpacity
+        style={[globalStyles.button, { backgroundColor: colors.success }]}
+        onPress={handleAddExpense}
+      >
+        <Text style={globalStyles.buttonText}>Add Expense</Text>
+      </TouchableOpacity>
     </View>
   );
 };
-
-const styles = StyleSheet.create({
-  container: {
-    padding: 20,
-  },
-  input: {
-    marginBottom: 10,
-    padding: 10,
-    borderColor: '#ddd',
-    borderWidth: 1,
-    borderRadius: 5,
-  },
-});
 
 export default AddExpense;
