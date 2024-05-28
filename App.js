@@ -7,4 +7,3 @@ const App = () => {
 };
 
 export default App;
-// 27.0.11718014 rc1	Installed
